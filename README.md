@@ -40,7 +40,7 @@ The following features will be positively assessed in your code evaluation. Plea
 you first have completed the task, before trying to implement any of those additional points.
 
 1. Implementing additional classes for points 1 and 2 that will utilize ​ Java Streams ​ for
-the estimation of the statistical metrics needed.
+the estimation of the statistical metrics needed. (Done)
 
 2. Implementing the class of point 2 in such a way that can handle all Numerical data
 types, by using ​ Generics​. (Used the trump type ? extending Integer class)

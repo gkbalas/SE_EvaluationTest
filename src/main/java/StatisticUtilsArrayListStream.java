@@ -1,25 +1,20 @@
-import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
-
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.DoubleStream;
 
-public class StatisticUtilsArray {
+public class StatisticUtilsArrayListStream {
     /**
      * StatisticsUtilsArray is a class for calculating some basic statistics parameters
      * in a double array
      */
-    double min;
-    double max;
-    double median;
-    double mean;
-    double sd;
-    DescriptiveStatistics stats;
+    ArrayList<? extends Integer> doublesArray;
 
-    public StatisticUtilsArray(double[] doublesArray) {
+    public StatisticUtilsArrayListStream(ArrayList<? extends Integer> doublesArrayList) {
         /**
          * @param doublesArray The array to find the statistics parameters
          *                     It must be double[]
          */
-        this.stats = new DescriptiveStatistics(doublesArray);
+        this.doublesArray = doublesArrayList;
     }
 
     public double getMin() {
@@ -27,8 +22,7 @@ public class StatisticUtilsArray {
          * Find the minimum of the array
          * @return  The minimum of the array
          */
-        this.min = this.stats.getMin();
-        return this.min;
+        return this.doublesArray.stream().min(Integer::compare).get();
     }
 
     public double getMax() {
@@ -36,8 +30,7 @@ public class StatisticUtilsArray {
          * Find the maximum of the array
          * @return  The maximum of the array
          */
-        this.max = this.stats.getMax();
-        return this.max;
+        return this.doublesArray.stream().max(Integer::compare).get();
     }
 
     public double getMedian() {
@@ -45,8 +38,10 @@ public class StatisticUtilsArray {
          * Find the median of the array
          * @return  The median of the array
          */
-        this.median = this.stats.getPercentile(50);
-        return this.median;
+        DoubleStream sortedArray = this.doublesArray.stream().mapToDouble(Integer::doubleValue).sorted();
+        return this.doublesArray.size() % 2 == 0?
+                sortedArray.skip(this.doublesArray.size()/2-1).limit(2).average().getAsDouble():
+                sortedArray.skip(this.doublesArray.size()/2).findFirst().getAsDouble();
     }
 
     public double getMean() {
@@ -54,8 +49,7 @@ public class StatisticUtilsArray {
          * Find the mean of the array
          * @return  The mean of the array
          */
-        this.mean = this.stats.getMean();
-        return this.mean;
+        return this.doublesArray.stream().mapToDouble(Integer::doubleValue).average().getAsDouble();
     }
 
     public double getSd() {
@@ -63,20 +57,23 @@ public class StatisticUtilsArray {
          * Find the standard deviation of the array
          * @return  The standard deviation of the array
          */
-        this.sd = this.stats.getStandardDeviation();
-        return this.sd;
+        double mean = getMean();
+        double sd = this.doublesArray.stream()
+                .mapToDouble(s -> Math.pow(s - mean,2) / this.doublesArray.size())
+                .sum();
+        return Math.sqrt(sd);
     }
 
     public static void main(String[] args) {
         /**
          * A simple presentation of the class
          */
-        double[] doublesArray = new double[7];
+        ArrayList<Integer> doublesArray = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
-            doublesArray[i] = i + 1;
+            doublesArray.add(i+1);
         }
-        StatisticUtilsArray stats = new StatisticUtilsArray(doublesArray);
-        System.out.println(Arrays.toString(doublesArray));
+        StatisticUtilsArrayListStream stats = new StatisticUtilsArrayListStream(doublesArray);
+        System.out.println(doublesArray);
         System.out.println("Max = " + stats.getMax());
         System.out.println("Min = " + stats.getMin());
         System.out.println("Mean = " + stats.getMean());
@@ -84,3 +81,4 @@ public class StatisticUtilsArray {
         System.out.println("Standard Deviation = " + stats.getSd());
     }
 }
+

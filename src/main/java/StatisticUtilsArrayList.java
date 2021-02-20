@@ -81,8 +81,8 @@ public class StatisticUtilsArrayList {
         System.out.println(doublesArray);
         System.out.println("Max = " + stats.getMax());
         System.out.println("Min = " + stats.getMin());
-        System.out.println("Mean = " + stats.getMean()); // Probably apache math has a problem, mean and median
-        System.out.println("Median = " + stats.getMedian()); // has the same result, but should not
+        System.out.println("Mean = " + stats.getMean());
+        System.out.println("Median = " + stats.getMedian());
         System.out.println("Standard Deviation = " + stats.getSd());
     }
 }
