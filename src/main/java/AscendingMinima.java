@@ -88,28 +88,30 @@ public class AscendingMinima {
         return prevMinima;
     }
 
-    public void printAllMinimas() {
+    public ArrayList<ArrayList<Integer>> getAllMinimas() {
         /**
          * The function that implements both the two parts of the algorithm
          * and prints the current window and the current minima
          * WARNING The user must have set k in the class constructor
          */
+        ArrayList<ArrayList<Integer>> allMinimas = new ArrayList<>();
         if (Optional.ofNullable(this.k).orElse(0) == 0) {
             System.out.println("k variable must be initialized");
-            return ;
+            return allMinimas;
         }
         this.window = new ArrayList<Integer>(this.array.subList(0, this.k));
         this.minima = this.ascendingMinima(this.window);
         ArrayList<Integer> remainingElements = new ArrayList<Integer>(
                 this.array.subList(this.k, this.array.size()));
-        System.out.println("Window: "+this.window+"---->Ascending Minima: "+this.minima);
+        allMinimas.add(new ArrayList<Integer>(this.minima));
         while (remainingElements.size() > 0) {
             this.minima = this.minimaInNewWindow(this.window, remainingElements.get(0),this.minima);
             this.window.remove(0);
             this.window.add(remainingElements.get(0));
             remainingElements.remove(0);
-            System.out.println("Window: "+this.window+"---->Ascending Minima: "+this.minima);
+            allMinimas.add(new ArrayList<Integer>(this.minima));
         }
+        return allMinimas;
     }
 
     public static void main(String[] args) {
@@ -119,6 +121,7 @@ public class AscendingMinima {
         ArrayList<Integer> array = new ArrayList<Integer>(Arrays.asList(1,3,3,3,2,5,8,7,8,9));
         AscendingMinima asc = new AscendingMinima(array, 3);
         AscendingMinima asc2 = new AscendingMinima(array);
-        asc.printAllMinimas();
+        ArrayList<ArrayList<Integer>> allMinimas = asc.getAllMinimas();
+        allMinimas.stream().forEach(s -> System.out.println(s));
     }
 }

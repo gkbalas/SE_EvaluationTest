@@ -65,4 +65,50 @@ class AscendingMinimaTests {
         ascMinima = new AscendingMinima(prevWindow);
         assertEquals(expectedOutput, ascMinima.minimaInNewWindow(prevWindow, newElement, prevMinima));
     }
+
+    private static Stream<Arguments> getAllMinimasTest() {
+        return Stream.of(
+                arguments(new ArrayList<Integer>(Arrays.asList(1,3,3,2,5,8,7,8,9)),
+                        3,
+                        new ArrayList<ArrayList<Integer>>(Arrays.asList(
+                                new ArrayList<Integer>(Arrays.asList(1,3)),
+                                new ArrayList<Integer>(Arrays.asList(2)),
+                                new ArrayList<Integer>(Arrays.asList(2,5)),
+                                new ArrayList<Integer>(Arrays.asList(2,5,8)),
+                                new ArrayList<Integer>(Arrays.asList(5,7)),
+                                new ArrayList<Integer>(Arrays.asList(7,8)),
+                                new ArrayList<Integer>(Arrays.asList(7,8,9))
+                        ))),
+                arguments(new ArrayList<Integer>(Arrays.asList(1,3,3,2,5,8,7,8,9)),
+                        4,
+                        new ArrayList<ArrayList<Integer>>(Arrays.asList(
+                                new ArrayList<Integer>(Arrays.asList(1,2)),
+                                new ArrayList<Integer>(Arrays.asList(2,5)),
+                                new ArrayList<Integer>(Arrays.asList(2,5,8)),
+                                new ArrayList<Integer>(Arrays.asList(2,5,7)),
+                                new ArrayList<Integer>(Arrays.asList(5,7,8)),
+                                new ArrayList<Integer>(Arrays.asList(7,8,9))
+                        ))),
+                arguments(new ArrayList<Integer>(Arrays.asList(1,3,3,2,5,8,7,8,9)),
+                        5,
+                        new ArrayList<ArrayList<Integer>>(Arrays.asList(
+                                new ArrayList<Integer>(Arrays.asList(1,2,5)),
+                                new ArrayList<Integer>(Arrays.asList(2,5,8)),
+                                new ArrayList<Integer>(Arrays.asList(2,5,7)),
+                                new ArrayList<Integer>(Arrays.asList(2,5,7,8)),
+                                new ArrayList<Integer>(Arrays.asList(5,7,8,9))
+                        )))
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    @DisplayName("Minima In New Window Test")
+    void getAllMinimasTest(
+            ArrayList<Integer> array,
+            int window,
+            ArrayList<ArrayList<Integer>> expectedOutput) {
+        ascMinima = new AscendingMinima(array, window);
+        assertEquals(expectedOutput, ascMinima.getAllMinimas());
+    }
 }
